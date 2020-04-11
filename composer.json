@@ -1,0 +1,34 @@
+{
+	"name" : "phpmv/ubiquity-oauth",
+	"description" : "Oauth 2 client for Ubiquity framework",
+	"type" : "extension",
+	"keywords" : [
+		"php",
+		"framework",
+		"mvc",
+		"oauth2",
+		"tools",
+		"php-framework"
+	],
+	"require": {
+        "hybridauth/hybridauth": "^3.2",
+		"phpmv/ubiquity": "^2.3"
+    },
+	"license" : "Apache-2.0",
+	"authors" : [{
+			"name" : "Jean-Christophe HERON",
+			"email" : "myaddressmail@gmail.com",
+			"role" : "Lead developer"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"Ubiquity\\" : "src/Ubiquity/"
+		}
+	},
+	"extra" : {
+		"branch-alias" : {
+			"dev-master" : "1.0.x-dev"
+		}
+	}
+}
