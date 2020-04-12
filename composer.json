@@ -11,7 +11,7 @@
 		"php-framework"
 	],
 	"require": {
-        "hybridauth/hybridauth": "^3.2",
+        "hybridauth/hybridauth": "3.1",
 		"phpmv/ubiquity": "^2.3"
     },
 	"license" : "Apache-2.0",
