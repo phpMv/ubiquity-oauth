@@ -61,16 +61,7 @@ class OAuthManager {
 	 * @return array
 	 */
 	public static function getConfig(): array {
-		$file = \ROOT . \DS . 'config' . \DS . 'oauth.php';
-		if (file_exists($file)) {
-			return self::$config = include $file;
-		}
-		return [
-			'callback' => '',
-			'providers' => [],
-			'debug_mode' => false,
-			'debug_file' => './oauth.log'
-		];
+		return self::$config = OAuthAdmin::loadConfig();
 	}
 
 	/**
@@ -111,15 +102,7 @@ class OAuthManager {
 	 * @return array
 	 */
 	public static function getProviderConfig(string $name): array {
-		return (self::$config['providers'][$name]) ?? ([
-			'enabled' => false,
-			'force' => false,
-			'keys' => [
-				'id' => '',
-				'secret' => ''
-			],
-			'scope' => ''
-		]);
+		return (self::$config['providers'][$name]) ?? (OAuthAdmin::DEFAULT_PROVIDER_CONFIG);
 	}
 }
 
