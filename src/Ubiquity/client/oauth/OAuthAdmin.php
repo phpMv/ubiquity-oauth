@@ -11,48 +11,134 @@ class OAuthAdmin {
 	public const CONFIG_FILE_NAME = 'oauth.php';
 
 	public const PROVIDERS = [
-		'Amazon',
-		'AOLOpenID',
-		'Authentiq',
-		'BitBucket',
-		'Blizzard',
-		'Discord',
-		'Disqus',
-		'Dribbble',
-		'Facebook',
-		'Foursquare',
-		'GitHub',
-		'GitLab',
-		'Google',
-		'Instagram',
-		'LinkedIn',
-		'Mailru',
-		'MicrosoftGraph',
-		'Odnoklassniki',
-		'OpenID',
-		'ORCID',
-		'Paypal',
-		'PaypalOpenID',
-		'QQ',
-		'Reddit',
-		'Slack',
-		'Spotify',
-		'StackExchange',
-		'StackExchangeOpenID',
-		'Steam',
-		'Strava',
-		'SteemConnect',
-		'Telegram',
-		'Tumblr',
-		'TwitchTV',
-		'Twitter',
-		'Vkontakte',
-		'WeChat',
-		'WindowsLive',
-		'WordPress',
-		'Yandex',
-		'Yahoo',
-		'YahooOpenID'
+		'Amazon' => [
+			'type' => 'OAuth2',
+			'dev' => 'https://developer.amazon.com'
+		],
+		'AOLOpenID' => [
+			'type' => 'OpenID'
+		],
+		'Authentiq' => [
+			'type' => 'OAuth2'
+		],
+		'BitBucket' => [
+			'type' => 'OAuth2'
+		],
+		'Blizzard' => [
+			'type' => 'OAuth2'
+		],
+		'Discord' => [
+			'type' => 'OAuth2'
+		],
+		'Disqus' => [
+			'type' => 'OAuth2'
+		],
+		'Dribbble' => [
+			'type' => 'OAuth2'
+		],
+		'Facebook' => [
+			'type' => 'OAuth2'
+		],
+		'Foursquare' => [
+			'type' => 'OAuth2'
+		],
+		'GitHub' => [
+			'type' => 'OAuth2'
+		],
+		'GitLab' => [
+			'type' => 'OAuth2'
+		],
+		'Google' => [
+			'type' => 'OAuth2',
+			'dev' => 'https://console.developers.google.com/'
+		],
+		'Instagram' => [
+			'type' => 'OAuth2'
+		],
+		'LinkedIn' => [
+			'type' => 'OAuth2'
+		],
+		'Mailru' => [
+			'type' => 'OAuth2'
+		],
+		'MicrosoftGraph' => [
+			'type' => 'OAuth2'
+		],
+		'Odnoklassniki' => [
+			'type' => 'OAuth2'
+		],
+		'OpenID' => [
+			'type' => 'OpenID'
+		],
+		'ORCID' => [
+			'type' => 'OAuth2'
+		],
+		'Paypal' => [
+			'type' => 'OpenID'
+		],
+		'PaypalOpenID' => [
+			'type' => 'OpenID'
+		],
+		'QQ' => [
+			'type' => 'OAuth2'
+		],
+		'Reddit' => [
+			'type' => 'OAuth2'
+		],
+		'Slack' => [
+			'type' => 'OAuth2'
+		],
+		'Spotify' => [
+			'type' => 'OAuth2'
+		],
+		'StackExchange' => [
+			'type' => 'OAuth2'
+		],
+		'StackExchangeOpenID' => [
+			'type' => 'OpenID'
+		],
+		'Steam' => [
+			'type' => 'Hybrid'
+		],
+		'Strava' => [
+			'type' => 'OAuth2'
+		],
+		'SteemConnect' => [
+			'type' => 'OAuth2'
+		],
+		'Telegram' => [
+			'type' => 'Hybrid'
+		],
+		'Tumblr' => [
+			'type' => 'OAuth1'
+		],
+		'TwitchTV' => [
+			'type' => 'OAuth2'
+		],
+		'Twitter' => [
+			'type' => 'OAuth1'
+		],
+		'Vkontakte' => [
+			'type' => 'OAuth2'
+		],
+		'WeChat' => [
+			'type' => 'OAuth2'
+		],
+		'WindowsLive' => [
+			'type' => 'OAuth2'
+		],
+		'WordPress' => [
+			'type' => 'OAuth2'
+		],
+		'Yandex' => [
+			'type' => 'OAuth2'
+		],
+		'Yahoo' => [
+			'type' => 'OAuth2'
+		],
+		'YahooOpenID' => [
+			'type' => 'OpenID'
+		]
 	];
 
 	public const DEFAULT_CONFIG = [
@@ -81,7 +167,8 @@ class OAuthAdmin {
 	 * @return array
 	 */
 	public static function getAvailableProviders() {
-		$providers = array_combine(self::PROVIDERS, self::PROVIDERS);
+		$provNames = array_keys(self::PROVIDERS);
+		$providers = array_combine($provNames, $provNames);
 		$actualProviders = array_keys(self::loadProvidersConfig());
 		foreach ($actualProviders as $name) {
 			if (isset($providers[$name])) {
@@ -125,7 +212,15 @@ class OAuthAdmin {
 	 * @return array
 	 */
 	public static function getProviderConfig(string $name): array {
-		return self::loadConfig()['providers'][$name] ?? self::DEFAULT_PROVIDER_CONFIG;
+		$default = self::DEFAULT_PROVIDER_CONFIG;
+		$providerType = self::PROVIDERS[$name]['type'] ?? '';
+		if ($providerType !== 'OAuth2' && $providerType !== 'OAuth1') {
+			$default = [
+				'enabled' => false,
+				'force' => false
+			];
+		}
+		return self::loadConfig()['providers'][$name] ?? $default;
 	}
 
 	/**
@@ -217,6 +312,15 @@ class OAuthAdmin {
 		$globalConfig = self::loadConfig();
 		$callback = $globalConfig['callback'] ?? '';
 		return \trim(\str_replace($siteUrl, '', $callback), '/');
+	}
+
+	/**
+	 *
+	 * @param string $name
+	 * @return string
+	 */
+	public static function getProviderType(string $name) {
+		return self::PROVIDERS[$name]['type'] ?? 'OAuth2';
 	}
 }
 
