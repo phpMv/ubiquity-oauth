@@ -190,6 +190,21 @@ class OAuthAdmin {
 	 *
 	 * @return array
 	 */
+	public static function getEnabledProviders() {
+		$result = [];
+		$actualProviders = self::loadProvidersConfig();
+		foreach ($actualProviders as $name => $config) {
+			if (isset($config['enabled']) && $config['enabled'] === true) {
+				$result[] = $name;
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
 	public static function loadConfig(): array {
 		if (is_array(self::$config)) {
 			return self::$config;
