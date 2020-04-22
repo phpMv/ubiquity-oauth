@@ -8,136 +8,144 @@ class OAuthAdmin {
 
 	private static $config;
 
+	private const OAUTH1 = 'OAuth1';
+
+	private const OAUTH2 = 'OAuth2';
+
+	private const OPENID = 'OpenID';
+
+	private const HYBRID = 'Hybrid';
+
 	public const CONFIG_FILE_NAME = 'oauth.php';
 
 	public const PROVIDERS = [
 		'Amazon' => [
-			'type' => 'OAuth2',
+			'type' => self::OAUTH2,
 			'dev' => 'https://developer.amazon.com'
 		],
 		'AOLOpenID' => [
-			'type' => 'OpenID'
+			'type' => self::OPENID
 		],
 		'Authentiq' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'BitBucket' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Blizzard' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Discord' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Disqus' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Dribbble' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Facebook' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Foursquare' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'GitHub' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'GitLab' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Google' => [
-			'type' => 'OAuth2',
+			'type' => self::OAUTH2,
 			'dev' => 'https://console.developers.google.com/'
 		],
 		'Instagram' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'LinkedIn' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Mailru' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'MicrosoftGraph' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Odnoklassniki' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'OpenID' => [
-			'type' => 'OpenID'
+			'type' => self::OPENID
 		],
 		'ORCID' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Paypal' => [
-			'type' => 'OpenID'
+			'type' => self::OPENID
 		],
 		'PaypalOpenID' => [
-			'type' => 'OpenID'
+			'type' => self::OPENID
 		],
 		'QQ' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Reddit' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Slack' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Spotify' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'StackExchange' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'StackExchangeOpenID' => [
-			'type' => 'OpenID'
+			'type' => self::OPENID
 		],
 		'Steam' => [
-			'type' => 'Hybrid'
+			'type' => self::HYBRID
 		],
 		'Strava' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'SteemConnect' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Telegram' => [
-			'type' => 'Hybrid'
+			'type' => self::HYBRID
 		],
 		'Tumblr' => [
-			'type' => 'OAuth1'
+			'type' => self::OAUTH1
 		],
 		'TwitchTV' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Twitter' => [
-			'type' => 'OAuth1'
+			'type' => self::OAUTH1
 		],
 		'Vkontakte' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'WeChat' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'WindowsLive' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'WordPress' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Yandex' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'Yahoo' => [
-			'type' => 'OAuth2'
+			'type' => self::OAUTH2
 		],
 		'YahooOpenID' => [
-			'type' => 'OpenID'
+			'type' => self::OPENID
 		]
 	];
 
@@ -214,7 +222,7 @@ class OAuthAdmin {
 	public static function getProviderConfig(string $name): array {
 		$default = self::DEFAULT_PROVIDER_CONFIG;
 		$providerType = self::PROVIDERS[$name]['type'] ?? '';
-		if ($providerType !== 'OAuth2' && $providerType !== 'OAuth1') {
+		if ($providerType !== self::OAUTH1 && $providerType !== self::OAUTH2) {
 			$default = [
 				'enabled' => false,
 				'force' => false
@@ -320,7 +328,7 @@ class OAuthAdmin {
 	 * @return string
 	 */
 	public static function getProviderType(string $name) {
-		return self::PROVIDERS[$name]['type'] ?? 'OAuth2';
+		return self::PROVIDERS[$name]['type'] ?? self::OAUTH2;
 	}
 }
 
