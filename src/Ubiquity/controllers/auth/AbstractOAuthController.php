@@ -22,7 +22,8 @@ abstract class AbstractOAuthController extends Controller {
 	protected $provider;
 
 	public function _oauth(string $name) {
-		$link = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_SERVER['HTTP_HOST']}/{$_SERVER['REQUEST_URI']}";
+		$requestURI = trim(strtok($_SERVER["REQUEST_URI"], '?'), '/');
+		$link = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_SERVER['HTTP_HOST']}/{$requestURI}";
 		$this->provider = OAuthManager::startAdapter($name, $link);
 		$this->onConnect($name, $this->provider);
 	}

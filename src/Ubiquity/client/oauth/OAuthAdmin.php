@@ -195,7 +195,7 @@ class OAuthAdmin {
 		$actualProviders = self::loadProvidersConfig();
 		foreach ($actualProviders as $name => $config) {
 			if (isset($config['enabled']) && $config['enabled'] === true) {
-				$result[] = $name;
+				$result[strtolower($name)] = $name;
 			}
 		}
 		return $result;
