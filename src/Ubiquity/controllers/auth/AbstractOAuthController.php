@@ -10,7 +10,7 @@ use Hybridauth\Adapter\AdapterInterface;
  * This class is part of Ubiquity
  *
  * @author jc
- * @version 1.0.0
+ * @version 1.0.1
  *
  */
 abstract class AbstractOAuthController extends Controller {
@@ -21,10 +21,12 @@ abstract class AbstractOAuthController extends Controller {
 	 */
 	protected $provider;
 
-	public function _oauth(string $name) {
-		$requestURI = trim(strtok($_SERVER["REQUEST_URI"], '?'), '/');
-		$link = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . "://{$_SERVER['HTTP_HOST']}/{$requestURI}";
-		$this->provider = OAuthManager::startAdapter($name, $link);
+	public function _oauth(string $name, ?string $callbackUrl = null) {
+        if(!isset($callbackUrl)) {
+            $requestURI = \trim(\strtok($_SERVER["REQUEST_URI"], '?'), '/');
+            $callbackUrl = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ((isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on") ? 'https' : 'http') . "://{$_SERVER['HTTP_HOST']}/{$requestURI}";
+        }
+		$this->provider = OAuthManager::startAdapter($name, $callbackUrl);
 		$this->onConnect($name, $this->provider);
 	}
 
